@@ -17,3 +17,31 @@ class Paper:
 
         self.line_color = line_color
         self.margin_color = margin_color
+
+    def draw_page_PIL(self, page):
+        w, h = page.page_width, page.page_height
+
+        canvas_shape = [(0, 0), (h*2, w*2)]
+
+        left_margin_shape = [(page.margin_left, 0), (page.margin_left, page.page_height)]
+        right_margin_shape = [(w - page.margin_right, 0), (w - page.margin_right, h)]
+        top_margin_shape = [(0, page.margin_top), (w, page.margin_top)]
+        bottom_margin_shape = [(0, h - page.margin_bottom), (w, h - page.margin_bottom)]
+
+        # creating new Image object
+        img = Image.new("RGB", (w, h))
+        
+        img1 = ImageDraw.Draw(img)
+
+        img1.rectangle(canvas_shape, fill="white")
+
+        img1.line(left_margin_shape, width = 0, fill="black")
+        img1.line(right_margin_shape, width = 0, fill="black")
+        img1.line(top_margin_shape, width = 0, fill="black")
+        img1.line(bottom_margin_shape, width = 0, fill="black")
+
+        for i in range(page.margin_top, page.page_height - page.margin_bottom, page.line_height):
+            img1.line([(0, i), (w, i)], width = 0, fill="black")
+        
+        img.save("output.png")
+        page.page_img = img
