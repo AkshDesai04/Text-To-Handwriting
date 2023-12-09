@@ -17,3 +17,19 @@ class Paper:
 
         self.line_color = line_color
         self.margin_color = margin_color
+
+
+    def draw_page(self, page):
+        screen = Screen()
+        cur = Turtle()
+        hideturtle()
+
+        screen.setup(1000, 1410)
+        
+        cur.forward(1000)
+
+        ts = getscreen()
+        ts.getcanvas().postscript(file="output.ps", colormode='color')
+        Image.open("output.ps").save("output.png")
+
+        done()
