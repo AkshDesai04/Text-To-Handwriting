@@ -45,3 +45,6 @@ class Paper:
         
         img.save("output.png")
         page.page_img = img
+
+page = Paper(1410, 1000)
+page.draw_page_PIL(page)
