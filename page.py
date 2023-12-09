@@ -1,10 +1,11 @@
 from PIL import Image, ImageDraw
 
-BLACK = 0
-RED = 10
+WHITE = "white"
+BLACK = "black"
+RED = "red"
 
 class Paper:
-    def __init__(self, page_height = 1410, page_width = 1000, margin_left = 150, margin_right = 0, margin_top = 150, margin_bottom = 75, line_height = 35, line_gap = 0, line_color = BLACK, margin_color = RED):
+    def __init__(self, page_height = 1410, page_width = 1000, margin_left = 150, margin_right = 0, margin_top = 150, margin_bottom = 75, line_height = 35, line_gap = 0, page_color = WHITE, line_color = BLACK, margin_color = RED):
         self.page_height = page_height
         self.page_width = page_width
         self.margin_left = margin_left
@@ -17,7 +18,8 @@ class Paper:
 
         self.line_color = line_color
         self.margin_color = margin_color
-
+        self.page_color = page_color
+    
     def draw_page_PIL(self, page):
         w, h = page.page_width, page.page_height
 
@@ -33,15 +35,15 @@ class Paper:
         
         img1 = ImageDraw.Draw(img)
 
-        img1.rectangle(canvas_shape, fill="white")
+        img1.rectangle(canvas_shape, fill=page.page_color)
 
-        img1.line(left_margin_shape, width = 0, fill="black")
-        img1.line(right_margin_shape, width = 0, fill="black")
-        img1.line(top_margin_shape, width = 0, fill="black")
-        img1.line(bottom_margin_shape, width = 0, fill="black")
+        img1.line(left_margin_shape, width = 0, fill=page.margin_color)
+        img1.line(right_margin_shape, width = 0, fill=page.margin_color)
+        img1.line(top_margin_shape, width = 0, fill=page.margin_color)
+        img1.line(bottom_margin_shape, width = 0, fill=page.margin_color)
 
-        for i in range(page.margin_top, page.page_height - page.margin_bottom, page.line_height):
-            img1.line([(0, i), (w, i)], width = 0, fill="black")
+        for i in range(page.margin_top + page.line_height, page.page_height - page.margin_bottom, page.line_height):
+            img1.line([(0, i), (w, i)], width = 0, fill=page.line_color)
         
         img.save("output.png")
         page.page_img = img
