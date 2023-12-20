@@ -20,7 +20,7 @@ class Paper:
         self.margin_color = margin_color
         self.page_color = page_color
     
-    def draw_page_PIL(self, page):
+    def draw_page_PIL(self, page, save = True):
         w, h = page.page_width, page.page_height
 
         canvas_shape = [(0, 0), (h*2, w*2)]
@@ -31,7 +31,7 @@ class Paper:
         bottom_margin_shape = [(0, h - page.margin_bottom), (w, h - page.margin_bottom)]
 
         # creating new Image object
-        img = Image.new("RGB", (w, h))
+        img = Image.new("RGBA", (w, h))
         
         img1 = ImageDraw.Draw(img)
 
@@ -45,8 +45,9 @@ class Paper:
         for i in range(page.margin_top + page.line_height, page.page_height - page.margin_bottom, page.line_height):
             img1.line([(0, i), (w, i)], width = 0, fill=page.line_color)
         
-        img.save("output.png")
-        page.page_img = img
+        if save:
+            img.save("output.png")
+        page.img = img
 
 page = Paper(1410, 1000)
 page.draw_page_PIL(page)
